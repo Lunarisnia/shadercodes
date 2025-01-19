@@ -52,6 +52,19 @@ vec3 square_wave(vec2 uv) {
         }
         color *= draw_square_line(uv, 0.1, y1, w, 0.9, 1.0);
     }
+
+    for (int i = 0; i < 10; i++) {
+        float offset = ((float(i) * 0.2) + u_time) / 2.0;
+        float x1 = fract(0.1 - offset);
+        if (x1 < 0.1) {
+            x1 = 0.1;
+        }
+        float h = fract(0.9 + offset);
+        if (h > 0.9) {
+            h = 0.9;
+        }
+        color *= draw_square_line(uv, x1, 0.1, 0.9, h, 1.0);
+    }
     return color;
 }
 
