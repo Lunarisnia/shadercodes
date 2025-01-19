@@ -3,7 +3,7 @@ uniform vec2 u_resolution;
 void main() {
     vec2 uv = gl_FragCoord.xy / u_resolution;
 
-    float feather = 0.02;
+    float feather = 0.09;
 
     vec2 bl = smoothstep(vec2(feather), vec2(0.1), uv);
     float bottomLeftBorders = bl.x * bl.y;
