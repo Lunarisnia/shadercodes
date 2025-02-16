@@ -42,16 +42,32 @@ vec3 beating_circle(vec2 uv) {
     }
     vec2 center = vec2(0.5);
 
-    vec3 c1 = draw_circle(uv, center, radius) + vec3(0.2, 0.8, 0.4);
-    vec3 color = vec3(c1);
+    vec3 color = draw_circle(uv, center, radius) + vec3(0.2, 0.8, 0.4);
 
     return color;
 }
 
-// TODO: What happens if you combine distances fields together using different functions and operations?
 void main() {
     vec2 uv = gl_FragCoord.xy / u_resolution;
-    vec3 color = vec3(beating_circle(uv));
+    // vec3 circle = vec3(beating_circle(uv));
+
+    // Adding the two of them will make them looks like its melting together when they're close
+    float add = distance(uv, vec2(0.3)) + distance(uv, vec2(0.6));
+    // This does the same thing as adding them but with greater effect, this also double as adding them both to the same scene
+    float mult = distance(uv, vec2(0.3)) * distance(uv, vec2(0.6));
+    // This gives a line where the two circle collide it seeems
+    float minimum = min(distance(uv, vec2(0.3)), distance(uv, vec2(0.6)));
+    // This will only show up if there is any colliding circle, and it shows only the specific spot where it collides
+    float maximum = max(distance(uv, vec2(0.3)), distance(uv, vec2(0.6)));
+    // It shows the peak of the circles (midpoint) but somehow the 2nd circle has it color inverted
+    float power = pow(distance(uv, vec2(0.3)), distance(uv, vec2(0.8)));
+
+    float pct = power;
+
+    float spinning = distance(uv, vec2(sin(u_time) * 0.25, cos(u_time) * 0.25) + vec2(0.5));
+    float c1 = distance(uv, vec2(0.5));
+
+    vec3 color = vec3(min(c1, spinning));
 
     gl_FragColor = vec4(color, 1.0);
 }
